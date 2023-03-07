@@ -35,21 +35,20 @@ function onGalleryClick(event) {
     return;
   }
 
-  const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-`);
+  const instance = basicLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600">`, {
+    onShow: () => {
+      document.addEventListener("keydown", keyEsc);
+    },
+    onClose: () => {
+      document.removeEventListener("keydown", keyEsc);
+    },
+  });
 
-  document.addEventListener("keydown", (event) => {
+  const keyEsc = (event) => {
     if (event.key === "Escape") {
       instance.close();
     }
-  });
-
-  document.removeEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      instance.close();
-    }
-  });
+  };
 
   instance.show();
 }
